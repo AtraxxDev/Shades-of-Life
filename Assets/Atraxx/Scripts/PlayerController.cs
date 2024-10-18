@@ -7,14 +7,16 @@ public class PlayerController : MonoBehaviour
     InputAction moveAction;
 
     public Rigidbody rb;
-    public Transform playerCamera; // Referencia al transform de la cámara
+    public Transform playerCamera;
     [SerializeField] private float _speed = 5;
-    [SerializeField] private float _rotationSpeed = 10f; // Velocidad de rotación
+    [SerializeField] private float _rotationSpeed = 10f; 
 
     void Start()
     {
         playerInput = GetComponent<PlayerInput>();
         moveAction = playerInput.actions.FindAction("Move");
+
+        playerInput.onControlsChanged += OnControlsChanged;
     }
 
     void FixedUpdate()
@@ -28,28 +30,35 @@ public class PlayerController : MonoBehaviour
 
     public void MovePlayer(Vector2 direction)
     {
-        // Obtener la dirección de movimiento basada en la dirección de la cámara
         Vector3 camForward = playerCamera.forward;
         Vector3 camRight = playerCamera.right;
 
-        // Eliminar la componente Y para que el movimiento sea horizontal
         camForward.y = 0f;
         camRight.y = 0f;
         camForward.Normalize();
         camRight.Normalize();
 
-        // Calcular la dirección del movimiento en el espacio del mundo
         Vector3 moveDirection = camForward * direction.y + camRight * direction.x;
 
-        // Mover al jugador
         Vector3 move = moveDirection * _speed * Time.fixedDeltaTime;
         rb.MovePosition(rb.position + move);
 
-        // Rotar al jugador hacia la dirección del movimiento
         if (moveDirection != Vector3.zero)
         {
             Quaternion newRotation = Quaternion.LookRotation(moveDirection);
             rb.MoveRotation(Quaternion.Slerp(rb.rotation, newRotation, _rotationSpeed * Time.fixedDeltaTime));
+        }
+    }
+
+    private void OnControlsChanged(PlayerInput input)
+    {
+        if (input.currentControlScheme == "Gamepad")
+        {
+            Debug.Log("Se está usando un gamepad.");
+        }
+        else if (input.currentControlScheme == "Keyboard&Mouse")
+        {
+            Debug.Log("Se está usando teclado y ratón.");
         }
     }
 }
