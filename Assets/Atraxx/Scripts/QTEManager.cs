@@ -1,37 +1,34 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
-using UnityEngine.UI;
 
 public class QTEManager : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _qtepromptText;
+    [SerializeField] private GameObject qteObject;
+    [SerializeField] private TMP_Text qtePromptText;
     [SerializeField] private Image timerBar;
     [SerializeField] private float timeLimit = 3f;
+    [SerializeField] private PlayerInput _playerInput;
 
-    private PlayerInput _playerInput;
     private bool _qteActive = false;
     private string _currentInput;
-    private float _timeRemaining;
-    void Start()
-    {
-    }
+    private float timeRemaining;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         if (_qteActive)
         {
-            _timeRemaining -= Time.deltaTime;
-            timerBar.fillAmount = _timeRemaining / timeLimit;
+            timeRemaining -= Time.deltaTime;
+            timerBar.fillAmount = timeRemaining / timeLimit;
 
-            if (_timeRemaining <= 0f)
+            if (timeRemaining <= 0f)
             {
                 QTEFailed();
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             StartQTE();
         }
@@ -39,37 +36,25 @@ public class QTEManager : MonoBehaviour
 
     public void StartQTE()
     {
+        qteObject.SetActive(true);
         _qteActive = true;
-        _timeRemaining = timeLimit;
+        timeRemaining = timeLimit;
 
-        // Elegimos un input adecuado según el control activo (teclado o gamepad)
         _currentInput = GetRandomInput();
-        _qtepromptText.text = $"Presiona: {_currentInput}";
+        qtePromptText.text =_currentInput;
 
-        timerBar.fillAmount = 1f; // Reiniciar la barra de tiempo
-    }
-
-    private void QTESuccess()
-    {
-        _qteActive = false;
-        _qtepromptText.text = "¡Éxito!";
-        // Lógica adicional al completar con éxito el QTE
-    }
-
-    private void QTEFailed()
-    {
-        _qteActive = false;
-        _qtepromptText.text = "¡Fallaste!";
-        // Lógica adicional para manejar el fallo
+        timerBar.fillAmount = 1f;
+        Debug.Log($"Esperando input: {_currentInput}");
     }
 
     public void OnAction(InputAction.CallbackContext context)
     {
         if (_qteActive && context.phase == InputActionPhase.Performed)
         {
-            string inputName = context.control.displayName.ToUpper(); // Detectamos el nombre del input
+            string inputName = NormalizeInputName(context.control.displayName);
+            Debug.Log($"Input recibido: {inputName}");
 
-            if (inputName == _currentInput)  // Comparar con la entrada requerida
+            if (inputName == _currentInput)
             {
                 QTESuccess();
             }
@@ -82,19 +67,45 @@ public class QTEManager : MonoBehaviour
 
     private string GetRandomInput()
     {
-        string controlScheme = _playerInput.currentControlScheme;
-
-        if (controlScheme == "Gamepad")
+        if (IsGamepadActive())
         {
-            // Botones típicos de gamepad
-            string[] gamepadInputs = { "Cross", "Circle", "Square", "Triangle" };
+            string[] gamepadInputs = { "A", "B", "X", "Y" };
             return gamepadInputs[Random.Range(0, gamepadInputs.Length)];
         }
-        else // Keyboard&Mouse
+        else
         {
-            // Teclas comunes de teclado
-            string[] keyboardInputs = { "A", "S", "D", "F" };
+            string[] keyboardInputs = { "V", "M", "N", "B" };
             return keyboardInputs[Random.Range(0, keyboardInputs.Length)];
         }
+    }
+
+    private bool IsGamepadActive()
+    {
+        foreach (var device in _playerInput.devices)
+        {
+            if (device is Gamepad) return true;
+        }
+        return false;
+    }
+
+    private string NormalizeInputName(string input)
+    {
+        // Normaliza el nombre del input para evitar problemas de comparación
+        return input.Trim().ToUpper();
+    }
+
+    private void QTESuccess()
+    {
+        _qteActive = false;
+        qtePromptText.text = "¡Éxito!";
+        qteObject.SetActive(false);
+
+    }
+
+    private void QTEFailed()
+    {
+        _qteActive = false;
+        qtePromptText.text = "¡Fallaste!";
+        qteObject.SetActive(false);
     }
 }
