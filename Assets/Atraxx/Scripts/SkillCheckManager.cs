@@ -2,9 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Linq;
 
-public class SkillCheckManager : MonoBehaviour
+public class SkillCheckManager : MonoBehaviour, IMinigame
 {
+    public bool IsComplete { get; private set; } = false;
+
     // UI Elements
     [Header("UI Elements")]
     [SerializeField] private GameObject skillCheckUI;
@@ -29,6 +32,9 @@ public class SkillCheckManager : MonoBehaviour
     private Vector2 initialBarPosition;
     private bool skillCheckActive = false;
 
+    // Reference to MinigameStarter
+    [SerializeField]private MinigameStarter minigameStarter;
+
     private void Start()
     {
         Initialize();
@@ -36,16 +42,11 @@ public class SkillCheckManager : MonoBehaviour
 
     private void Update()
     {
+        
         if (skillCheckActive)
         {
             MoveBar();
             CheckSkillCheckFail();
-        }
-
-        // Start skill check manually for testing
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            StartSkillCheck();
         }
     }
 
@@ -68,14 +69,13 @@ public class SkillCheckManager : MonoBehaviour
 
     private void CheckSkillCheckFail()
     {
-        // Check if the bar has exceeded the target area (including margin)
         if (barTransform.anchoredPosition.x > (targetTransform.anchoredPosition.x + (targetArea.rectTransform.sizeDelta.x / 2) + failMargin))
         {
             SkillCheckFailed();
         }
     }
 
-    private void StartSkillCheck()
+    public void StartSkillCheck()
     {
         skillCheckActive = true;
         skillCheckUI.SetActive(true);
@@ -98,7 +98,6 @@ public class SkillCheckManager : MonoBehaviour
             string inputName = NormalizeInputName(context.control.displayName);
             Debug.Log($"Input recibido: {inputName}");
 
-            // Check for valid input and target area
             if (IsValidInput(inputName) && IsWithinTargetArea())
             {
                 SkillCheckSuccess();
@@ -126,11 +125,7 @@ public class SkillCheckManager : MonoBehaviour
 
     private bool IsGamepadActive()
     {
-        foreach (var device in playerInput.devices)
-        {
-            if (device is Gamepad) return true;
-        }
-        return false;
+        return playerInput.devices.Any(device => device is Gamepad);
     }
 
     private string NormalizeInputName(string input)
@@ -145,6 +140,13 @@ public class SkillCheckManager : MonoBehaviour
         Debug.Log("¡Skill Check exitoso!");
         promptText.text = "¡Éxito!";
         ResetBarPosition();
+        IsComplete = true;
+
+        // Notify MinigameStarter
+        if (minigameStarter != null)
+        {
+            minigameStarter.EndCurrentMinigame(this);
+        }
     }
 
     private void SkillCheckFailed()
@@ -154,10 +156,43 @@ public class SkillCheckManager : MonoBehaviour
         Debug.Log("Skill Check fallido.");
         promptText.text = "¡Fallaste!";
         ResetBarPosition();
+
+        // Notify MinigameStarter
+        if (minigameStarter != null)
+        {
+            minigameStarter.EndCurrentMinigame(this);
+        }
     }
 
     private void ResetBarPosition()
     {
         barTransform.anchoredPosition = initialBarPosition;
+    }
+
+    // IMinigame Interface Implementation
+    public void StartMinigame()
+    {
+
+        Debug.Log("Iniciando minijuego de Skill Check...");
+        FadeManager.Instance.FadeInOut(() =>
+        {
+            // Lógica después del fade-in
+            StartSkillCheck();
+        });
+        
+
+
+    }
+
+    public void EndMinigame()
+    {
+        Debug.Log("Terminando minijuego de Skill Check...");
+
+        FadeManager.Instance.FadeInOut(() =>
+        {
+            skillCheckActive = false;
+            skillCheckUI.SetActive(false);
+        });
+
     }
 }

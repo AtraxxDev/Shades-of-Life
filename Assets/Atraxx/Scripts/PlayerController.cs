@@ -9,7 +9,10 @@ public class PlayerController : MonoBehaviour
     public Rigidbody rb;
     public Transform playerCamera;
     [SerializeField] private float _speed = 5;
-    [SerializeField] private float _rotationSpeed = 10f; 
+    [SerializeField] private float _rotationSpeed = 10f;
+
+    // Variable para controlar si el jugador puede moverse
+    private bool canMove = true;
 
     void Start()
     {
@@ -21,10 +24,13 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
-        Vector2 direction = moveAction.ReadValue<Vector2>();
-        if (direction != Vector2.zero)
+        if (canMove)
         {
-            MovePlayer(direction);
+            Vector2 direction = moveAction.ReadValue<Vector2>();
+            if (direction != Vector2.zero)
+            {
+                MovePlayer(direction);
+            }
         }
     }
 
@@ -60,5 +66,11 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("Se está usando teclado y ratón.");
         }
+    }
+
+    // Método para habilitar/deshabilitar el movimiento
+    public void SetCanMove(bool canMove)
+    {
+        this.canMove = canMove;
     }
 }

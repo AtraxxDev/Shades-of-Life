@@ -3,8 +3,11 @@ using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
 
-public class QTEManager : MonoBehaviour
+public class QTEManager : MonoBehaviour, IMinigame
 {
+    public bool IsComplete { get; private set; } = false;
+
+
     [SerializeField] private GameObject qteObject;
     [SerializeField] private TMP_Text qtePromptText;
     [SerializeField] private Image timerBar;
@@ -14,6 +17,8 @@ public class QTEManager : MonoBehaviour
     private bool _qteActive = false;
     private string _currentInput;
     private float timeRemaining;
+
+    [SerializeField] private MinigameStarter minigameStarter; // Referencia para terminar el minijuego.
 
     private void Update()
     {
@@ -28,10 +33,24 @@ public class QTEManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+
+    }
+
+
+    public void StartMinigame()
+    {
+        FadeManager.Instance.FadeInOut(() =>
         {
             StartQTE();
-        }
+        });
+    }
+
+    public void EndMinigame()
+    {
+        FadeManager.Instance.FadeInOut(() =>
+        {
+            
+        });
     }
 
     public void StartQTE()
@@ -99,6 +118,10 @@ public class QTEManager : MonoBehaviour
         _qteActive = false;
         qtePromptText.text = "¡Éxito!";
         qteObject.SetActive(false);
+        if (minigameStarter != null)
+        {
+            minigameStarter.EndCurrentMinigame(this);
+        }
 
     }
 
@@ -107,5 +130,11 @@ public class QTEManager : MonoBehaviour
         _qteActive = false;
         qtePromptText.text = "¡Fallaste!";
         qteObject.SetActive(false);
+        if (minigameStarter != null)
+        {
+            minigameStarter.EndCurrentMinigame(this);
+        }
     }
+
+    
 }

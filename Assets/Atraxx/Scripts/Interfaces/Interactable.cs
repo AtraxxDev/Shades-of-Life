@@ -2,6 +2,7 @@ using UnityEngine;
 
 public abstract class Interactable : MonoBehaviour, IPickable
 {
+    [SerializeField] private Collider triggerCollider;
 
     private bool isPickedUp = false;
     public virtual void PickUp(Transform holder)
@@ -12,7 +13,8 @@ public abstract class Interactable : MonoBehaviour, IPickable
             transform.SetParent(holder);
             transform.localPosition = Vector3.zero;
             transform.localRotation = Quaternion.identity;
-            GetComponent<Rigidbody>().isKinematic = true; 
+            GetComponent<Rigidbody>().isKinematic = true;
+            triggerCollider.enabled = false;
         }
     }
     public virtual void Drop()
@@ -22,6 +24,7 @@ public abstract class Interactable : MonoBehaviour, IPickable
             isPickedUp = false;
             transform.SetParent(null);
             GetComponent<Rigidbody>().isKinematic = false;
+            triggerCollider.enabled = true;
         }
     }
 

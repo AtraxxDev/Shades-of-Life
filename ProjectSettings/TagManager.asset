@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 3
-  tags: []
+  tags:
+  - MinigameSkill
+  - MinigameSmash
+  - MinigameQuick
   layers:
   - Default
   - TransparentFX

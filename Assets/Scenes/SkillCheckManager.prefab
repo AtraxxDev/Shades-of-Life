@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &5095859338889291931
 Transform:
   m_ObjectHideFlags: 0
@@ -51,3 +51,4 @@ MonoBehaviour:
   promptText: {fileID: 0}
   playerInput: {fileID: 0}
   barSpeed: 200
+  minigameStarter: {fileID: 0}
