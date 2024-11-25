@@ -16,7 +16,7 @@ public class SkillCheckManager : MonoBehaviour, IMinigame
     [SerializeField] private Image background;
     [SerializeField] private TMP_Text promptText;
     [SerializeField] private PlayerInput playerInput;
-
+    [SerializeField] private Animator Animation;
     [Space(10)]
     // Configuration
     [Header("Configuration")]
@@ -190,6 +190,10 @@ public class SkillCheckManager : MonoBehaviour, IMinigame
 
         FadeManager.Instance.FadeInOut(() =>
         {
+            if (Animation != null)
+            {
+                Animation.SetTrigger("End");
+            }
             skillCheckActive = false;
             skillCheckUI.SetActive(false);
         });

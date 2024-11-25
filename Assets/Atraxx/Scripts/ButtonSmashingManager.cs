@@ -16,6 +16,7 @@ public class ButtonSmashingManager : MonoBehaviour, IMinigame
     [SerializeField] private float fillAmountPerPress = 0.1f; // Incremento por input correcto.
     [SerializeField] private PlayerInput playerInput; // Componente de Input.
     [SerializeField] private MinigameStarter minigameStarter; // Referencia para terminar el minijuego.
+    [SerializeField] private Animator Animation;
 
     private float timeRemaining;
     private bool challengeActive = false;
@@ -137,6 +138,10 @@ public class ButtonSmashingManager : MonoBehaviour, IMinigame
 
         FadeManager.Instance.FadeInOut(() =>
         {
+            if (Animation != null)
+            {
+                Animation.SetTrigger("EndII");
+            }
         });
     }
 

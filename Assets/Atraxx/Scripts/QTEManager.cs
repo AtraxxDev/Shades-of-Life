@@ -13,6 +13,7 @@ public class QTEManager : MonoBehaviour, IMinigame
     [SerializeField] private Image timerBar;
     [SerializeField] private float timeLimit = 3f;
     [SerializeField] private PlayerInput _playerInput;
+    [SerializeField] private Animator Animation;
 
     private bool _qteActive = false;
     private string _currentInput;
@@ -49,7 +50,10 @@ public class QTEManager : MonoBehaviour, IMinigame
     {
         FadeManager.Instance.FadeInOut(() =>
         {
-            
+            if(Animation != null)
+            {
+                Animation.SetTrigger("EndIII");
+            }
         });
     }
 
