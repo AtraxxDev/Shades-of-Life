@@ -8,9 +8,10 @@ public class PlayerInteraction : MonoBehaviour
     public float rayDistance = 1.2f;
     public LayerMask pickableLayer;
 
-    private IPickable pickedObject;
+    public IPickable pickedObject;
     private PlayerInputs playerInputs;
 
+    [SerializeField]private ChangeWeight changeWeight;
     private void Awake()
     {
         playerInputs = new PlayerInputs();
@@ -48,6 +49,7 @@ public class PlayerInteraction : MonoBehaviour
             if (pickable != null)
             {
                 pickable.PickUp(itemHolder);
+                changeWeight.SetLayerWeightToOne();
                 pickedObject = pickable;
             }
         }
@@ -58,6 +60,7 @@ public class PlayerInteraction : MonoBehaviour
         if (pickedObject != null)
         {
             pickedObject.Drop();
+            changeWeight.SetLayerWeightToZero();
             pickedObject = null;
         }
     }

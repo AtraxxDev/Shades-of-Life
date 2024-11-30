@@ -8,11 +8,11 @@ public class PlayerController : MonoBehaviour
 
     public Rigidbody rb;
     public Transform playerCamera;
-    [SerializeField] private float _speed = 5;
+    [SerializeField] private float _speed = 5f;
     [SerializeField] private float _rotationSpeed = 10f;
-
-    // Variable para controlar si el jugador puede moverse
     private bool canMove = true;
+
+    [SerializeField]private Animator animator; // Referencia al componente Animator
 
     void Start()
     {
@@ -27,6 +27,10 @@ public class PlayerController : MonoBehaviour
         if (canMove)
         {
             Vector2 direction = moveAction.ReadValue<Vector2>();
+
+            // Actualiza el parámetro del Animator
+            animator.SetBool("isWalking", direction != Vector2.zero);
+
             if (direction != Vector2.zero)
             {
                 MovePlayer(direction);
@@ -68,7 +72,6 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Método para habilitar/deshabilitar el movimiento
     public void SetCanMove(bool canMove)
     {
         this.canMove = canMove;
