@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &9198508013529738869
 Transform:
   m_ObjectHideFlags: 0
@@ -51,3 +51,5 @@ MonoBehaviour:
   decayRate: 0.3
   fillAmountPerPress: 0.1
   playerInput: {fileID: 0}
+  minigameStarter: {fileID: 0}
+  Animation: {fileID: 0}
