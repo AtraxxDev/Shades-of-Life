@@ -14,6 +14,7 @@ public class QTEManager : MonoBehaviour, IMinigame
     [SerializeField] private float timeLimit = 3f;
     [SerializeField] private PlayerInput _playerInput;
     [SerializeField] private Animator Animation;
+    public string tagToFind;
 
     private bool _qteActive = false;
     private string _currentInput;
@@ -50,7 +51,19 @@ public class QTEManager : MonoBehaviour, IMinigame
     {
         FadeManager.Instance.FadeInOut(() =>
         {
-            if(Animation != null)
+            GameObject[] objects = GameObject.FindGameObjectsWithTag(tagToFind);
+            foreach (GameObject obj in objects)
+            {
+                Animator anim = obj.GetComponent<Animator>();
+                {
+                    
+                    if (anim != null)
+                    {
+                        anim.SetTrigger("PastoUno");
+                    }
+                }
+            }
+            if (Animation != null)
             {
                 Animation.SetTrigger("EndIII");
             }

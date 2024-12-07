@@ -17,6 +17,7 @@ public class ButtonSmashingManager : MonoBehaviour, IMinigame
     [SerializeField] private PlayerInput playerInput; // Componente de Input.
     [SerializeField] private MinigameStarter minigameStarter; // Referencia para terminar el minijuego.
     [SerializeField] private Animator Animation;
+    public string tagToFind;
 
     private float timeRemaining;
     private bool challengeActive = false;
@@ -138,6 +139,18 @@ public class ButtonSmashingManager : MonoBehaviour, IMinigame
 
         FadeManager.Instance.FadeInOut(() =>
         {
+            GameObject[] objects = GameObject.FindGameObjectsWithTag(tagToFind);
+            foreach (GameObject obj in objects)
+            {
+                Animator anim = obj.GetComponent<Animator>();
+                {
+
+                    if (anim != null)
+                    {
+                        anim.SetTrigger("PastoUno");
+                    }
+                }
+            }
             if (Animation != null)
             {
                 Animation.SetTrigger("EndII");

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 4899365670503300}
   - component: {fileID: 33983315073371544}
   - component: {fileID: 23534555299708020}
-  - component: {fileID: 95383775579014752}
   - component: {fileID: 64729023312562368}
   m_Layer: 0
   m_Name: SM_Terrain_Mountain_03
@@ -88,28 +87,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!95 &95383775579014752
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1919982666568850}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: b5deac8f3af13d047af030d7a7fa29f5, type: 3}
-  m_Controller: {fileID: 9100000, guid: c7bd27d6489b08d439be5acce0991ecf, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!64 &64729023312562368
 MeshCollider:
   m_ObjectHideFlags: 0

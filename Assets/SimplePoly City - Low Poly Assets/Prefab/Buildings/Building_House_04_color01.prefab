@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3300000}
   - component: {fileID: 2300000}
   - component: {fileID: 8610916433401647353}
-  - component: {fileID: 1103305812323196672}
   m_Layer: 0
   m_Name: Building_House_04_color01
   m_TagString: Untagged
@@ -109,25 +108,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 24.771994, y: 7.8704777, z: 15.322349}
   m_Center: {x: 0.7986021, y: 3.7148385, z: 0.115477555}
---- !u!95 &1103305812323196672
-Animator:
-  serializedVersion: 7
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 100000}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: c7bd27d6489b08d439be5acce0991ecf, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_AnimatePhysics: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
