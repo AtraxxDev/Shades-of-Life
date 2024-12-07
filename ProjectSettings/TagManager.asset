@@ -11,6 +11,7 @@ TagManager:
   - ZonaDos
   - ZonaDos
   - ZonaTres
+  - Fade
   layers:
   - Default
   - TransparentFX
